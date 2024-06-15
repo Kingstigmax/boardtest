@@ -1,2 +1,20 @@
-# tests
- test.*
+
+#Ignore log files
+ *.log
+
+ #Specific files
+ test
+ test.cpp
+ testversion
+
+ # Ignore the logs directory
+ logs/
+
+ # Ignore all .tmp files
+ *.tmp
+
+ # Ignore build directories
+ build/
+ bin/
+ out/
+
