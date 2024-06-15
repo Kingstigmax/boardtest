@@ -1,11 +1,12 @@
+//
+// Created by Frederick Lofthouse on 15.06.24.
+//
+
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <vector>
 #include <sstream>
-#include <iomanip>
-#include <chrono>
-
 
 std::vector<int> ParseBoardFile(std::string line)
 {
@@ -14,15 +15,17 @@ std::vector<int> ParseBoardFile(std::string line)
     char character;
     std::vector<int> row;
 
-    while (boardstream >> number >> character && character == ',')
+    while (boardstream >> number)
     {
         row.push_back(number);
+        if (!(boardstream >> character)) {
+            break;
+        }
     }
     return row;
 }
 
-
-std::vector<std::vector<int>> ReadBoardFile(std::string path)
+std::vector<std::vector<int>> ReadBoardFile(const std::string& path)
 {
     std::ifstream file(path);
     std::vector<std::vector<int>> boardvariable;
@@ -35,6 +38,10 @@ std::vector<std::vector<int>> ReadBoardFile(std::string path)
             boardvariable.push_back(row);
         }
     }
+    else
+    {
+        std::cerr << "Failed to open the file: " << path << std::endl;
+    }
     return boardvariable;
 }
 
@@ -44,24 +51,17 @@ void PrintBoardFile(const std::vector<std::vector<int>> &board)
     {
         for (int j = 0; j < board[i].size(); j++)
         {
-            std::cout << std::setw(3) << board[i][j] << std::setw(3);
+            std::cout << board[i][j];
+            if (j < board[i].size() - 1) {
+                std::cout << ", ";
+            }
         }
         std::cout << '\n';
     }
 }
 
 int main() {
-
-
-    auto start = std::chrono::high_resolution_clock::now();
-
     auto board = ReadBoardFile("board");
     PrintBoardFile(board);
-
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> duration = end - start;
-    std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
-
-
     return 0;
 }
