@@ -1,0 +1,3 @@
+/Users/fredericklofthouse/Developer/Board/cmake-build-debug/CMakeFiles/Board.dir
+/Users/fredericklofthouse/Developer/Board/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/fredericklofthouse/Developer/Board/cmake-build-debug/CMakeFiles/rebuild_cache.dir
