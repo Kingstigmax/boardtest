@@ -7,44 +7,65 @@
 #include <chrono>
 
 
-std::vector<int> ParseBoardFile(std::string line)
+enum class State {
+    kEmpty,
+    kObstacle
+};
+
+std::vector<State> ParseBoardFile(std::string line)
 {
     std::istringstream boardstream(line);
     int number;
     char character;
-    std::vector<int> row;
+    std::vector<State> row;
 
     while (boardstream >> number >> character && character == ',')
     {
-        row.push_back(number);
+        if (number == 0)
+        {
+            row.push_back(State::kEmpty);
+        }
+        else
+        {
+            row.push_back(State::kObstacle);
+        }
     }
     return row;
 }
 
 
-std::vector<std::vector<int>> ReadBoardFile(std::string path)
+std::vector<std::vector<State>> ReadBoardFile(std::string path)
 {
     std::ifstream file(path);
-    std::vector<std::vector<int>> boardvariable;
+    std::vector<std::vector<State>> boardvariable;
     if (file)
     {
         std::string line;
         while (std::getline(file, line))
         {
-            std::vector<int> row = ParseBoardFile(line);
+            std::vector<State> row = ParseBoardFile(line);
             boardvariable.push_back(row);
         }
     }
     return boardvariable;
 }
 
-void PrintBoardFile(const std::vector<std::vector<int>> &board)
+std::string CellString(State cell)
+{
+    switch (cell)
+    {
+        case State::kObstacle: return "⛰️  ";
+        default: return "0   ";
+    }
+}
+
+void PrintBoardFile(const std::vector<std::vector<State>> &board)
 {
     for (int i = 0; i < board.size(); i++)
     {
         for (int j = 0; j < board[i].size(); j++)
         {
-            std::cout << std::setw(3) << board[i][j] << std::setw(3);
+            std::cout << CellString(board[i][j]);
         }
         std::cout << '\n';
     }
@@ -52,16 +73,8 @@ void PrintBoardFile(const std::vector<std::vector<int>> &board)
 
 int main() {
 
-
-    auto start = std::chrono::high_resolution_clock::now();
-
     auto board = ReadBoardFile("board");
     PrintBoardFile(board);
-
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> duration = end - start;
-    std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
-
 
     return 0;
 }
