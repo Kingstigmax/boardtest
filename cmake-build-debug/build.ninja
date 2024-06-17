@@ -55,12 +55,6 @@ build CMakeFiles/Board.dir/main.cpp.o: CXX_COMPILER__Board_unscanned_Debug /User
   OBJECT_DIR = CMakeFiles/Board.dir
   OBJECT_FILE_DIR = CMakeFiles/Board.dir
 
-build CMakeFiles/Board.dir/test.cpp.o: CXX_COMPILER__Board_unscanned_Debug /Users/fredericklofthouse/Developer/Board/test.cpp || cmake_object_order_depends_target_Board
-  DEP_FILE = CMakeFiles/Board.dir/test.cpp.o.d
-  FLAGS = -g -std=gnu++11 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=13.6 -fcolor-diagnostics
-  OBJECT_DIR = CMakeFiles/Board.dir
-  OBJECT_FILE_DIR = CMakeFiles/Board.dir
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Board
@@ -69,7 +63,7 @@ build CMakeFiles/Board.dir/test.cpp.o: CXX_COMPILER__Board_unscanned_Debug /User
 #############################################
 # Link the executable Board
 
-build Board: CXX_EXECUTABLE_LINKER__Board_Debug CMakeFiles/Board.dir/main.cpp.o CMakeFiles/Board.dir/test.cpp.o
+build Board: CXX_EXECUTABLE_LINKER__Board_Debug CMakeFiles/Board.dir/main.cpp.o
   FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.2.sdk -mmacosx-version-min=13.6
   OBJECT_DIR = CMakeFiles/Board.dir
   POST_BUILD = :

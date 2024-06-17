@@ -3,8 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
-#include <iomanip>
-#include <chrono>
+#include <cmath>
 
 
 enum class State {
@@ -59,6 +58,17 @@ std::string CellString(State cell)
     }
 }
 
+std::vector<std::vector<State>> Search(std::vector<std::vector<State>> board, int init[2], int goal[2])
+{
+    std::cout << "No path found!" << '\n';
+    return std::vector<std::vector<State>> {};
+}
+
+int Heuristic(int x_1, int y_1, int x_2, int y_2)
+{
+    return std::abs(x_2 - x_1) + std::abs(y_2 - y_1);
+}
+
 void PrintBoardFile(const std::vector<std::vector<State>> &board)
 {
     for (int i = 0; i < board.size(); i++)
@@ -71,10 +81,16 @@ void PrintBoardFile(const std::vector<std::vector<State>> &board)
     }
 }
 
+
 int main() {
 
     auto board = ReadBoardFile("board");
-    PrintBoardFile(board);
+    int init[2] {0, 0};
+    int goal[2] {4, 5};
+
+    auto solution = Search(board, init, goal);
+
+    PrintBoardFile(solution);
 
     return 0;
 }
