@@ -4,12 +4,18 @@
 #include <vector>
 #include <sstream>
 #include <cmath>
+#include <algorithm>
 
 
 enum class State {
     kEmpty,
-    kObstacle
+    kObstacle,
+    kClosed,
+    kPath
 };
+
+
+const int delta[4][2] {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
 
 std::vector<State> ParseBoardFile(std::string line)
 {
@@ -56,6 +62,12 @@ std::string CellString(State cell)
         case State::kObstacle: return "⛰️  ";
         default: return "0   ";
     }
+}
+
+void AddToOpen(int x, int y, int g, int h, std::vector<std::vector<int>> &open_nodes, std::vector<std::vector<State>> &grid)
+{
+    open_nodes.push_back(std::vector<int> {x, y, g, h});
+    grid[x][y] = State::kClosed;
 }
 
 std::vector<std::vector<State>> Search(std::vector<std::vector<State>> board, int init[2], int goal[2])
