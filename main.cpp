@@ -11,7 +11,9 @@ enum class State {
     kEmpty,
     kObstacle,
     kClosed,
-    kPath
+    kPath,
+    kStart,
+    kFinish
 };
 
 
@@ -72,6 +74,9 @@ std::string CellString(State cell)
     switch (cell)
     {
         case State::kObstacle: return "⛰️  ";
+        case State::kPath: return "🚗  ";
+        case State::kStart: return "🚦  ";
+        case State::kFinish: return "🏁  ";
         default: return "0   ";
     }
 }
@@ -93,17 +98,61 @@ void AddToOpen(int x, int y, int g, int h, std::vector<std::vector<int>> &open_n
     grid[x][y] = State::kClosed;
 }
 
-std::vector<std::vector<State>> Search(std::vector<std::vector<State>> board, int init[2], int goal[2])
-{
-    std::cout << "No path found!" << '\n';
-    return std::vector<std::vector<State>> {};
-}
-
 int Heuristic(int x_1, int y_1, int x_2, int y_2)
 {
     return std::abs(x_2 - x_1) + std::abs(y_2 - y_1);
 }
 
+void ExpandNeighbors(const std::vector<int> &current, int goal[2], std::vector<std::vector<int>> &openlist, std::vector<std::vector<State>> &grid)
+{
+    int x = current[0];
+    int y = current[1];
+    int g = current[2];
+
+    for (int i = 0; i < 4; i++)
+    {
+        int x2 = x + delta[i][0];
+        int y2 = y + delta[i][1];
+
+        if (CheckValidCell(x2, y2, grid))
+        {
+            int g2 = g + 1;
+            int h2 = Heuristic(x2, y2, goal[0], goal[1]);
+            AddToOpen(x2, y2, g2, h2, openlist, grid);
+        }
+    }
+}
+
+
+std::vector<std::vector<State>> Search(std::vector<std::vector<State>> board, int init[2], int goal[2])
+{
+    std::vector<std::vector<int>> open {};
+
+    int x = init[0];
+    int y = init[1];
+    int g = 0;
+    int h = Heuristic(x, y, goal[0],goal[1]);
+    AddToOpen(x, y, g, h, open, board);
+
+    while (open.size() > 0) {
+        CellSort(&open);
+        auto current = open.back();
+        open.pop_back();
+        x = current[0];
+        y = current[1];
+        board[x][y] = State::kPath;
+
+        if (x == goal[0] && y == goal[1]) {
+            board[init[0]][init[1]] = State::kStart;
+            board[goal[0]][goal[1]] = State::kFinish;
+            return board;
+        }
+        ExpandNeighbors(current, goal, open, board);
+    }
+
+    std::cout << "No path found!" << '\n';
+    return std::vector<std::vector<State>> {};
+}
 
 void PrintBoardFile(const std::vector<std::vector<State>> &board)
 {
@@ -120,9 +169,9 @@ void PrintBoardFile(const std::vector<std::vector<State>> &board)
 
 int main() {
 
-    auto board = ReadBoardFile("board");
     int init[2] {0, 0};
-    int goal[2] {4, 5};
+    int goal[2] {5, 6};
+    auto board = ReadBoardFile("board");
 
     auto solution = Search(board, init, goal);
 
