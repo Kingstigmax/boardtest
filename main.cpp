@@ -55,6 +55,18 @@ std::vector<std::vector<State>> ReadBoardFile(std::string path)
     return boardvariable;
 }
 
+bool Compare(const std::vector<int> node_1, const std::vector<int> node_2)
+{
+    int f1 = node_1[2] + node_1[3];
+    int f2 = node_2[2] + node_2[3];
+    return f1 > f2;
+}
+
+void CellSort(std::vector<std::vector<int>> *v)
+{
+    std::sort(v->begin(), v->end(), Compare);
+}
+
 std::string CellString(State cell)
 {
     switch (cell)
@@ -62,6 +74,17 @@ std::string CellString(State cell)
         case State::kObstacle: return "⛰️  ";
         default: return "0   ";
     }
+}
+
+bool CheckValidCell(int x, int y, std::vector<std::vector<State>> &grid)
+{
+    bool on_grid_x = (x >= 0 && x < grid.size());
+    bool on_grid_y = (y >= 0 && y < grid[0].size());
+    if(on_grid_x && on_grid_y)
+    {
+        return grid[x][y] == State::kEmpty;
+    }
+    return false;
 }
 
 void AddToOpen(int x, int y, int g, int h, std::vector<std::vector<int>> &open_nodes, std::vector<std::vector<State>> &grid)
@@ -80,6 +103,7 @@ int Heuristic(int x_1, int y_1, int x_2, int y_2)
 {
     return std::abs(x_2 - x_1) + std::abs(y_2 - y_1);
 }
+
 
 void PrintBoardFile(const std::vector<std::vector<State>> &board)
 {
