@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/Board.dir/main.cpp.o -o Board 

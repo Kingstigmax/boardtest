@@ -6,7 +6,7 @@
 #include <cmath>
 #include <algorithm>
 
-
+// test
 enum class State {
     kEmpty,
     kObstacle,
